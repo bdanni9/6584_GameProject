@@ -1,0 +1,63 @@
+#include<iostream>
+#include <chrono>
+#include <thread>
+
+//Including the SDL inside the main
+#define SDL_MAIN_HANDLED
+#include<SDL.h>
+
+//Including Classes inside the main
+#include"engine.h"
+#include "input.h"
+
+int main(void)
+{
+	// Creating a new Engine reference
+	engine* Engine = new engine();
+	// Creating a new Asset reference
+	assets* _assets = new assets(Engine->renderer());
+
+	//Creating a new Scene reference
+	scene* gameScene = new game_scene();
+
+	//Creating a Input reference
+	input* _input = new input();
+
+	const Uint32 milliseconds_per_seconds = 1000;
+	const Uint32 frames_per_second = 60;
+	const Uint32 frame_time_ms = milliseconds_per_seconds / frames_per_second;
+
+	Uint32 frame_start_time_ms = 0;
+	Uint32 frame_end_time_ms = frame_time_ms;
+
+	//Running a while loop inside the main
+	while (true)
+	{
+		Uint32 previous_frame_duration = frame_end_time_ms - frame_start_time_ms;
+		frame_start_time_ms = SDL_GetTicks();
+
+		//This will enable the Inputs in the main
+		_input->get_input();
+		//This will enable the simulation inside the main using the Engine
+		Engine->simualte(previous_frame_duration,_assets,gameScene);
+
+		if (_input->is_button_state(input::Button::QUIT, input::Button_state::PRESSED))
+		{
+			std::cout << "UP PRESSED!!!!" << std::endl;
+		}
+
+		const Uint32 current_time_ms = SDL_GetTicks();
+		const Uint32 frame_duration_ms = current_time_ms - frame_start_time_ms;
+		if (frame_duration_ms < frame_time_ms)
+		{
+			const Uint32 time_to_sleep_for = frame_time_ms - frame_duration_ms;
+			std::this_thread::sleep_for(std::chrono::milliseconds(time_to_sleep_for));
+		}
+
+		frame_end_time_ms = SDL_GetTicks();
+
+		std::cout << frame_end_time_ms - frame_start_time_ms << std::endl;
+	}
+	
+	return 0;
+}
