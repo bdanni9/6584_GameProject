@@ -76,7 +76,7 @@ engine::engine(std::string window_name, configuration* config)
 		exit(1);
 	}
 
-	Mix_AllocateChannels(3);
+	Mix_AllocateChannels(2);
 }
 
 engine::~engine()

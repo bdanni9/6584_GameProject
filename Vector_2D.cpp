@@ -31,6 +31,13 @@ void Vector_2D::operator+=(Vector_2D rhs)
 	_y += rhs._y;
 }
 
+void Vector_2D::operator-=(Vector_2D rhs)
+{
+	//a=b; a is the vector b
+	_x -= rhs._x;
+	_y -= rhs._y;
+}
+
 Vector_2D Vector_2D::operator-(Vector_2D rhs)
 {
 	//a=b-a; a is the magnitude
@@ -69,4 +76,14 @@ void Vector_2D::normalize()
 float Vector_2D::angle()
 {
 	return -atan2f(_y, _x);
+}
+
+void Vector_2D::set_x(float x)
+{
+	_x = x;
+}
+
+void Vector_2D::set_y(float y)
+{
+	_y = y;
 }

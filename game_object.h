@@ -42,6 +42,7 @@ protected:
 
 	Circle_2D _collider;
 
+	bool isEffectedByGravity;
 	//Caching the values
 	/*int _x;
 	int _y;*/

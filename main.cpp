@@ -66,8 +66,8 @@ int main(void)
 			std::cout << "StartGame" << std::endl;
 		}
 
-
-		if (_input->is_button_state(input::Button::UP, input::Button_State::PRESSED))
+// Debuggeroni
+	/*	if (_input->is_button_state(input::Button::UP, input::Button_State::PRESSED))
 		{
 			std::cout << "UP PRESSED!!!!" << std::endl;
 		}
@@ -83,7 +83,7 @@ int main(void)
 		if (_input->is_button_state(input::Button::LEFT, input::Button_State::PRESSED))
 		{
 			std::cout << "Here is Left" << std::endl;
-		}
+		}*/
 
 		const Uint32 current_time_ms = SDL_GetTicks();
 		const Uint32 frame_duration_ms = current_time_ms - frame_start_time_ms;

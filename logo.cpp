@@ -4,9 +4,9 @@ logo::logo(std::string id) :game_object(id, "Texture.Logo")
 {
 	//Cache the logo position inside the constructor
 
-	_translation = Vector_2D(200, 50);
-	_width = 500;
-	_height = 500;
+	_translation = Vector_2D(200, 0);
+	_width = 300;
+	_height = 300;
 
 	_mass = 1.0f;
 

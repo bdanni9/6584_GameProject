@@ -5,6 +5,7 @@
 #include "walking_dino.h"
 #include "player.h"
 #include"logo.h"
+#include"ground.h"
 
 menu_scene::menu_scene()
 	: scene("Menu")
@@ -22,6 +23,9 @@ menu_scene::menu_scene()
 
 	game_object* _logo = new logo("Logo");
 	_game_objects[_logo->id()] = _logo;
+
+	game_object* Tile = new ground("Ground");
+	_game_objects[Tile->id()] = Tile;
 
 	/*game_object* dino_walking = new walking_dino("Dino.Walking");
 	_game_objects[dino_walking->id()] = dino_walking;*/
@@ -42,5 +46,5 @@ void menu_scene::update(SDL_Window* _window)
 	int w, h;
 	SDL_GetWindowSize(_window, &w, &h);
 
-	_camera_translation = Vector_2D(-w / 2.f + player_walking->width() / 2.f, -h / 2.f + player_walking->height() / 2.f) + player_walking->translation();*/
+	_camera_translation = Vector_2D(-w / 1.f + player_walking->width() / 1.f, -h / 1.f + player_walking->height() / 1.f) + player_walking->translation();*/
 }

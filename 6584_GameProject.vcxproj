@@ -155,6 +155,7 @@
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="game_object.cpp" />
     <ClCompile Include="game_scene.cpp" />
+    <ClCompile Include="ground.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="logo.cpp" />
     <ClCompile Include="main.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="engine.h" />
     <ClInclude Include="game_object.h" />
     <ClInclude Include="game_scene.h" />
+    <ClInclude Include="ground.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="logo.h" />
     <ClInclude Include="mario.h" />

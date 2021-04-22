@@ -4,7 +4,7 @@ mario::mario(std::string id):game_object(id,"Texture.Mario")
 {
 	//Cache the mario position inside the constructor
 
-	_translation = Vector_2D(150, 100);
+	_translation = Vector_2D(150, 600);
 
 
 	_mass = 1.0f;

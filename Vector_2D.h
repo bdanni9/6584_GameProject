@@ -12,6 +12,7 @@ public :
 	// function to make velocity
 	void operator = (Vector_2D rhs);
 	void operator +=(Vector_2D rhs);
+	void operator -=(Vector_2D rhs);
 
 	Vector_2D operator-(Vector_2D rhs);
 	Vector_2D operator+(Vector_2D rhs);
@@ -20,6 +21,9 @@ public :
 	float magnitude();
 	void normalize();
 	float angle();
+
+	void set_x(float x);
+	void set_y(float y);
 
 private:
 	float _x;

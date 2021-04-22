@@ -12,6 +12,8 @@ game_object::game_object(std::string id, std::string texture_id): _translation(0
 	_width = 100;
 	_height = 100;
 
+	isEffectedByGravity = false;
+
 	_flip = SDL_FLIP_NONE;
 }
 
@@ -52,10 +54,27 @@ void game_object::set_translation(Vector_2D translation)
 
 void game_object::simulate_physics(Uint32 milliseconds_to_simulate, assets*,scene*_scene)
 {
+	//Simulating Velocity
 	Vector_2D velocity = _velocity;
 	velocity.scale((float)milliseconds_to_simulate);
-
 	_translation += velocity;
+
+	// Simulating Gravity
+	if (isEffectedByGravity)
+	{
+		if (_translation.y() < 600)
+		{
+			Vector_2D gravity = Vector_2D(0, 10);
+			_translation += gravity;
+
+			if (_translation.y() > 600)
+			{
+				_translation.set_y(600);
+			}
+		}
+			
+	}
+	
 
 	for (game_object* GameObject : _scene->get_game_objects())
 	{
@@ -79,7 +98,8 @@ void game_object::simulate_physics(Uint32 milliseconds_to_simulate, assets*,scen
 
 		if (we_are_colliding_Yo)
 		{
-			std::cout << "We are Colliding" << std::endl;
+			//Debuggeroni
+			//std::cout << "We are Colliding" << std::endl;
 
 			float ratioOfMassToMine = GameObject->_mass / _mass;
 

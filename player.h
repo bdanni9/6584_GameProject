@@ -17,7 +17,8 @@ public:
 	{
 		Idle,
 		Walking,
-		Running
+		Running,
+		Jumping
 	};
 	void push_state(State state, assets* _assets);
 	void pop_state(assets* _assets);
@@ -25,7 +26,7 @@ public:
 	//virtual void functions
 	virtual void simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets, input* _input)override;
 	virtual void render(Uint32 milliseconds_to_simulate, assets* _assets, SDL_Renderer* renderer,configuration* config,scene*_scene)override;
-
+	virtual void simulate_physics(Uint32 milliseconds_to_simulate, assets* _assets, scene* _scene)override;
 	//Setting the Speed function that can be used inside the game
 	void set_speed(float speed);
 	float speed();
@@ -37,5 +38,6 @@ private:
 	
 	float _speed;
 	std::stack<State> _state;
+	Vector_2D _jumpvelocity;
 };
 

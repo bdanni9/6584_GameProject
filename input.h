@@ -18,6 +18,7 @@ public:
 		RIGHT,
 		JUMP,
 		RUNNING,
+		JUMPING,
 		STARTBUTTON,
 
 		INCREASE_SPEED,
