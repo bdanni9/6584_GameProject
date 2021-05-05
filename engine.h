@@ -10,6 +10,7 @@
 #include "input.h"
 #include "configuration.h"
 #include"scene.h"
+#include"game_manager.h"
 
 class engine
 {
@@ -19,15 +20,17 @@ public:
 	~engine();
 
 	//Functions used inside the public engine class
-	void simualte(Uint32 milliseconds_to_simulate,assets* _assets,scene* _scene,input* _input, configuration* config);
+	void simualte(Uint32 milliseconds_to_simulate,assets* _assets,scene* _scene,input* _input, configuration* config,game_manager* _game_manager);
 
 	//Functions used to create the render and window
 	SDL_Renderer* renderer();
 	SDL_Window* window();
+
+	static engine* instance;
 	
 private:
 	//Functions used inside the engine class
-	void simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets,scene* _scene,input*_input);
+	void simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets,scene* _scene,input*_input,game_manager*_game_manager);
 	void simulate_physics(Uint32 milliseconds_to_simulate,assets* _assets,scene* _scene);
 	void render(Uint32 milliseconds_to_simulate,assets* _assets,scene* _scene,input* _input, configuration* config);
 

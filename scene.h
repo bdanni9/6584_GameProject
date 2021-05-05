@@ -17,10 +17,14 @@ public:
 	~scene();
 
 	virtual void update(SDL_Window* window) = 0;
+	virtual void Reset()=0;
 
 	game_object* get_game_object(std::string id);
 	std::vector<game_object*> get_game_objects();
 
+
+	void add_game_object(game_object* _game_object);
+	void remove_game_object(std::string id);
 	Vector_2D camera_translation();
 
 	std::string id();

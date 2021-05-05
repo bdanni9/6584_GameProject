@@ -1,27 +1,16 @@
-#include "game_scene.h"
+#include "gameover_scene.h"
 #include "mario.h"
 #include "walking_dino.h"
 #include "player.h"
 #include "ground.h"
 #include"flymonster.h"
 
-game_scene::game_scene()
+gameover_scene::gameover_scene()
 	: scene("Game")
 {
-	Reset();
-}
-
-game_scene::~game_scene()
-{
-}
-
-void game_scene::Reset()
-{
-	_game_objects.clear();
-
-	_red = 0;
-	_green = 0;
-	_blue = 0;
+	_red = 120;
+	_green = 120;
+	_blue = 255;
 
 	//game_object* dino_walking = new walking_dino("Dino.Walking");
 	//_game_objects[dino_walking->id()] = dino_walking;
@@ -30,18 +19,21 @@ void game_scene::Reset()
 	_game_objects[man->id()] = man;
 
 
-	/*game_object* player_walking = new player("Player.Walking");d
-	_game_objects[player_walking->id()] = player_walking;*/
+	game_object* player_walking = new player("Player.Walking");
+	_game_objects[player_walking->id()] = player_walking;
 
 	game_object* flyingmonster = new flymonster("Texture.Flying.Monster");
 	_game_objects[flyingmonster->id()] = flyingmonster;
 
 	game_object* Tile = new ground("Ground");
 	_game_objects[Tile->id()] = Tile;
-
 }
 
-void game_scene::update(SDL_Window* _window)
+gameover_scene::~gameover_scene()
+{
+}
+
+void gameover_scene::update(SDL_Window* _window)
 {
 	game_object* player_walking = get_game_object("Player.Walking");
 

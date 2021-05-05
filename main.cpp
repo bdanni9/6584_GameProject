@@ -13,6 +13,9 @@
 #include"editor.h"
 #include "configuration.h"
 #include "menu_scene.h"
+#include"scene_manager.h"
+#include"gameover_scene.h"
+#include "game_manager.h"
 
 int main(void)
 {
@@ -36,6 +39,26 @@ int main(void)
 	//Creating a Editor reference
 	editor* _editor = new editor(L"Game");
 
+	//Creatring a Scene manager reference
+	scene_manager* _scene_manager = new scene_manager();
+
+	//Creating a game manager reference
+	game_manager* _game_manager = new game_manager();
+	
+	
+	_scene_manager->add_scene(new menu_scene());
+	_scene_manager->add_scene(new game_scene());
+	//_scene_manager->add_scene(new gameover_scene());
+	_scene_manager->set_current_scene("Game");
+
+	//
+	
+	//if (_scene_manager->set_current_scene("Menu") && _input->is_button_state(input::Button::STARTBUTTON, input::Button_State::PRESSED))
+	//{
+	//	_scene_manager->set_current_scene("Game");
+	//	std::cout << "StartGame" << std::endl;
+	//}
+
 	//Using stack for the game scenes
 	std::stack<scene*> scenes;
 	scenes.push(new menu_scene());
@@ -57,14 +80,14 @@ int main(void)
 
 		scenes.top()->update(Engine->window());
 		_input->get_input();
-		Engine->simualte(previous_frame_duration, _assets, top_scene,_input,config);
-		_editor->update(_input, top_scene,config);
+		Engine->simualte(previous_frame_duration, _assets, top_scene,_input,config,_game_manager);
+		_editor->update(_input, _scene_manager->current_scene(),config);
 
-		if (top_scene->id()=="Menu" &&_input->is_button_state(input::Button::STARTBUTTON, input::Button_State::PRESSED))
+		/*if (top_scene->id()=="Menu" &&_input->is_button_state(input::Button::STARTBUTTON, input::Button_State::PRESSED))
 		{
 			scenes.push(new game_scene());
 			std::cout << "StartGame" << std::endl;
-		}
+		}*/
 
 // Debuggeroni
 	/*	if (_input->is_button_state(input::Button::UP, input::Button_State::PRESSED))

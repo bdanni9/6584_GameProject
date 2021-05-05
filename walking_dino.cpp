@@ -6,6 +6,9 @@ walking_dino::walking_dino(std::string id):game_object(id, "Texture.Dino.Walking
 	_translation = Vector_2D(250, 150);
 	_velocity = Vector_2D(0.02f, 0);
 
+	_width = 200.f;
+	_height = 200.f;
+
 	_mass = 1.0f;
 
 	_collider.set_radius(_width / 5.0f);
@@ -16,7 +19,7 @@ walking_dino::~walking_dino()
 {
 }
 
-void walking_dino::simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets,input*_input)
+void walking_dino::simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets,input*_input,scene*_scene, game_manager* _game_manager)
 {
 }
 

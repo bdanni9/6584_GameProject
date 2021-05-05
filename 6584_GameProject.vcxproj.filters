@@ -78,6 +78,24 @@
     <ClCompile Include="ground.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="flymonster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="blinking_text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gameover_scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="health.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine.h">
@@ -144,6 +162,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="flymonster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="blinking_text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gameover_scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="health.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

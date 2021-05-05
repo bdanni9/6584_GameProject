@@ -9,7 +9,7 @@
 player::player(std::string id) :game_object(id, "Texture.Player.Walking"), _jumpvelocity(0.f, 0.f)
 {
 	_translation = Vector_2D(0, 400);
-	_velocity = Vector_2D(0.02f, 0);
+	_velocity = Vector_2D(0, 0);
 	_speed = 0.1f;
 
 	_mass = 10.0f;
@@ -17,9 +17,7 @@ player::player(std::string id) :game_object(id, "Texture.Player.Walking"), _jump
 	_collider.set_radius(_width / 5.0f);
 	_collider.set_translation(Vector_2D(_width / 2.0f, (float)_height));
 
-
-	_state.push(State::Idle);
-
+	_initialized = false;
 	isEffectedByGravity = true;
 
 }
@@ -30,7 +28,8 @@ player::~player()
 
 void player::push_state(State state, assets* _assets)
 {
-	handle_exit_state(_state.top(), _assets);
+	bool am_currently_in_a_state = _state.size() > 0;
+	if(am_currently_in_a_state) handle_exit_state(_state.top(), _assets);
 	_state.push(state);
 	handle_enter_state(_state.top(), _assets);
 }
@@ -43,19 +42,27 @@ void player::pop_state(assets* _assets)
 	handle_enter_state(_state.top(), _assets);
 }
 
-void player::simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets, input* _input)
+void player::simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets, input* _input,scene*_scene,game_manager*_game_manager)
 {
+	if(!_initialized)
+	{
+		push_state(State::Idle, _assets);
+		_initialized = true;
+	}
 
 	switch (_state.top())
 	{
 	case State::Idle:
-		if (_velocity.magnitude() > 0.0f)
+	{
+		bool am_walking = _velocity.x() != 0.0f;
+		if (am_walking)
 		{
 			push_state(State::Walking, _assets);
 		}
 		break;
+	}
 	case State::Walking:
-		if (_velocity.magnitude() == 0.0f)
+		if (_velocity.x() == 0.0f)
 		{
 			pop_state(_assets);
 		}
@@ -75,38 +82,38 @@ void player::simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets, input
 		}
 		break;
 	case State::Jumping:
-		if (_jumpvelocity.magnitude() <= 0.0f)
+		bool we_are_grounded = _velocity.y() == 0.f;
+		if(we_are_grounded)
 		{
 			pop_state(_assets);
 		}
-		else
-		{
-			_jumpvelocity -= Vector_2D(0, -0.1f);
-		}
+
 		break;
+		
 	}
 	//Jump up and apply velocity
-	if (_input->is_button_state(input::Button::JUMPING, input::Button_State::DOWN))
+	if (_input->is_button_state(input::Button::JUMPING, input::Button_State::PRESSED))
 	{
-		_jumpvelocity += Vector_2D(0.0f, -0.1f);
+		_velocity.set_y(-160.f);
+
+		push_state(State::Jumping, _assets);
+
+		//_jumpvelocity += Vector_2D(0.0f, -0.1f);
 	}
 
 	//Move Right and apply Velocity
-	_velocity= Vector_2D(0, 0);
+	
+	_velocity.set_x(0.0f);
 	if (_input->is_button_state(input::Button::RIGHT, input::Button_State::DOWN))
 	{
-		_velocity += Vector_2D(2.0f,0);
+		_velocity.set_x(76.0f);
 	}
 
 	//Move Left and apply velocity
 	if (_input->is_button_state(input::Button::LEFT, input::Button_State::DOWN))
 	{
-		_velocity += Vector_2D(-2.0f, 0);
+		_velocity.set_x(-76.0f);
 	}
-
-	
-
-
 	//We commented this because we dont want to move up and down based on the key movment
 	////Move Up and apply velocity
 	//if (_input->is_button_state(input::Button::UP, input::Button_State::DOWN))
@@ -120,9 +127,31 @@ void player::simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets, input
 	//	_velocity += Vector_2D(0, 1.0f);
 	//}
 
-	_velocity.normalize();
-	_velocity.scale(_speed);
+	//If Mario is the Killer
+	/*game_object* player = _scene->get_game_object("Mario");
 
+	Vector_2D mario_center = _translation + Vector_2D((float)_width / 2, (float)_height / 2);
+	Vector_2D marios_center = player->translation() + Vector_2D((float)player->width() / 2, (float)player->height() / 2);
+
+	float distance_to_mario = (mario_center - marios_center).magnitude();
+	if (distance_to_mario < 50.0f)
+	{
+		_game_manager->lose_life();
+		_scene->Reset();
+	}*/
+
+	//If Monster is the killer
+	game_object* player = _scene->get_game_object("Monster");
+
+	Vector_2D Monster_center = _translation + Vector_2D((float)_width / 2, (float)_height / 2);
+	Vector_2D Monsters_center = player->translation() + Vector_2D((float)player->width() / 2, (float)player->height() / 2);
+
+	float distance_to_Monster = (Monster_center - Monsters_center).magnitude();
+	if (distance_to_Monster < 50.0f)
+	{
+		_game_manager->lose_life();
+		_scene->Reset();
+	}
 }
 
 
@@ -138,11 +167,10 @@ void player::render(Uint32 milliseconds_to_simulate, assets* _assets, SDL_Render
 
 void player::simulate_physics(Uint32 milliseconds_to_simulate, assets* _assets, scene* _scene)
 {
-	_velocity += _jumpvelocity;
+	//_velocity = _jumpvelocity;
 
 
 	game_object::simulate_physics(milliseconds_to_simulate, _assets, _scene);
-	
 
 }
 
@@ -186,10 +214,9 @@ void player::handle_enter_state(State state, assets* _assets)
 	case State::Jumping:
 	{
 		_texture_id = "Texture.Player.Jumping";
-		_jumpvelocity +=Vector_2D(0,4.0f);
 		const int jumping_channel = 3;
 		sound* Sound = (sound*)_assets->get_assets("Sound.Jumping");
-		Mix_PlayChannel(jumping_channel, Sound->data(), -1);
+		Mix_PlayChannel(jumping_channel, Sound->data(), 0);
 		break;
 	}
 

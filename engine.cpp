@@ -13,11 +13,14 @@
 #include "game_object.h"
 #include "Vector_2D.h"
 #include"scene.h"
+#include"game_manager.h"
 
 
 //We do not need these anymore
 //#include "mario.h"
 //#include "walking_dino.h"
+
+engine* engine::instance = nullptr;
 
 engine::engine(std::string window_name, configuration* config)
 {
@@ -76,7 +79,9 @@ engine::engine(std::string window_name, configuration* config)
 		exit(1);
 	}
 
-	Mix_AllocateChannels(2);
+	Mix_AllocateChannels(1337);
+
+	engine::instance = this;
 }
 
 engine::~engine()
@@ -85,17 +90,22 @@ engine::~engine()
 
 }
 
-void engine::simualte(Uint32 milliseconds_to_simulate,assets* _assets,scene* _scene,input* _input, configuration* config)
+void engine::simualte(Uint32 milliseconds_to_simulate,assets* _assets,scene* _scene,input* _input, configuration* config,game_manager* _game_manager)
 {
 	//We will run the functions inside this simulate function constructor
-	simulate_AI(milliseconds_to_simulate,_assets,_scene,_input);
+	simulate_AI(milliseconds_to_simulate,_assets,_scene,_input,_game_manager);
 	simulate_physics(milliseconds_to_simulate,_assets,_scene);
 	render(milliseconds_to_simulate, _assets,_scene,_input, config);
 }
 
 
-void engine::simulate_AI(Uint32, assets*,scene*,input*)
+void engine::simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets,scene* _scene,input*_input,game_manager*_game_manager)
 {
+	std::vector<game_object*> game_objects = _scene->get_game_objects();
+	for (game_object* game_object : game_objects)
+	{
+		game_object->simulate_AI(milliseconds_to_simulate, _assets, _input,_scene,_game_manager);
+	}
 }
 
 void engine::simulate_physics(Uint32 milliseconds_to_simulate, assets*_assets ,scene*_scene)
@@ -214,7 +224,7 @@ void engine::render(Uint32  milliseconds_to_simulate, assets* _assets,scene* _sc
 	for (game_object* game_object : game_objects)
 	{
 		game_object->render(milliseconds_to_simulate, _assets, _renderer,config,_scene);
-		game_object->simulate_AI(milliseconds_to_simulate, _assets, _input);
+		//game_object->simulate_AI(milliseconds_to_simulate, _assets, _input);
 		game_object->simulate_physics(milliseconds_to_simulate, _assets,_scene);
 	}
 

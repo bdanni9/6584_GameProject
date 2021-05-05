@@ -32,6 +32,14 @@ assets::assets(SDL_Renderer* renderer)
 	}
 #pragma endregion
 
+#pragma region Mario
+	{
+		//Cache Mario Texture
+		texture* healthTexture = new texture("Texture.health", "Asserts/Heart.png", renderer);
+		_assets[healthTexture->id()] = healthTexture;
+	}
+#pragma endregion
+
 #pragma region Dino
 	{
 		//Cache Dino Walking Texture
@@ -48,6 +56,20 @@ assets::assets(SDL_Renderer* renderer)
 
 #pragma endregion
 
+#pragma region FlyingMonster
+	{
+		//Cache Dino Flying Monster Texture
+		const int frame_count = 4;
+		const Uint32 frame_duration_milliseconds = 100;
+		animated_texture* texture = new animated_texture(
+			"Texture.Flying.Monster",
+			"Asserts/flying.monster.png",
+			renderer,
+			frame_count,
+			frame_duration_milliseconds);
+		_assets[texture->id()] = texture;
+	}
+#pragma endregion
 #pragma region Player
 	//Moving the Knight Player
 		// Create player walking texture.
@@ -120,10 +142,10 @@ assets::assets(SDL_Renderer* renderer)
 			sound* SfxJumping = new sound("Sound.Jumping", "Asserts/jumping.wav");
 			_assets[SfxJumping->id()] = SfxJumping;
 		}
+
+
 	}
 #pragma endregion
-
-	
 
 #pragma endregion
 

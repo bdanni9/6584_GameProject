@@ -38,6 +38,18 @@ game_object* scene::get_game_object(std::string id)
 	return _game_objects[id];
 }
 
+void scene::add_game_object(game_object* _game_object)
+{
+	//TODO:This is unsafe, should check if object with same id exists
+	_game_objects[_game_object->id()] = _game_object;
+}
+
+void scene::remove_game_object(std::string id)
+{
+	//TODO : this is unsafe should check later
+	_game_objects.erase(id);
+}
+
 Vector_2D scene::camera_translation()
 {
 	return _camera_translation;

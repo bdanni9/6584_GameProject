@@ -2,6 +2,7 @@
 
 #include "game_object.h"
 #include "text.h"
+#include "engine.h"
 
 game_object::game_object(std::string id, std::string texture_id): _translation(0,0),_velocity(0,0),_collider(0.0f,Vector_2D(0.0f,0.0f))
 {
@@ -55,25 +56,44 @@ void game_object::set_translation(Vector_2D translation)
 void game_object::simulate_physics(Uint32 milliseconds_to_simulate, assets*,scene*_scene)
 {
 	//Simulating Velocity
-	Vector_2D velocity = _velocity;
-	velocity.scale((float)milliseconds_to_simulate);
-	_translation += velocity;
+	Vector_2D velocity_ms = _velocity;
+	velocity_ms.scale(milliseconds_to_simulate/1000.f);	
 
 	// Simulating Gravity
+	
 	if (isEffectedByGravity)
 	{
+		Vector_2D gravity_ms = Vector_2D(0, 60);
+		gravity_ms.scale((float)milliseconds_to_simulate/1000.f);
+		velocity_ms += gravity_ms;
+		_velocity   += gravity_ms;
+
+		/*
 		if (_translation.y() < 600)
 		{
-			Vector_2D gravity = Vector_2D(0, 10);
-			_translation += gravity;
+			
 
+			
 			if (_translation.y() > 600)
 			{
 				_translation.set_y(600);
 			}
+		}*/
+		int screen_width, screen_height;
+		SDL_GetWindowSize(engine::instance->window(), &screen_width, &screen_height);
+
+		int ground_height = 220;
+
+		bool we_are_grounded = (_translation.y() > screen_height - ground_height) && velocity_ms.y() > 0;
+		if(we_are_grounded)
+		{
+			velocity_ms.set_y(0);
+			_velocity.set_y(0);
+			_translation.set_y(screen_height - ground_height);
 		}
-			
 	}
+	
+	_translation += velocity_ms;
 	
 
 	for (game_object* GameObject : _scene->get_game_objects())

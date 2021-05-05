@@ -10,7 +10,7 @@ public:
 	~walking_dino();
 
 	//virtual void functions
-	virtual void simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets,input* _input)override;
+	virtual void simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets,input* _input,scene*_scene, game_manager* _game_manager)override;
 	virtual void render(Uint32 milliseconds_to_simulate, assets* _assets, SDL_Renderer* renderer,configuration* config,scene*_scene)override;
 
 };

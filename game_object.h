@@ -12,6 +12,7 @@
 #include "circle_2D.h"
 #include"configuration.h"
 #include "scene.h"
+#include"game_manager.h"
 
 class game_object
 {
@@ -24,7 +25,7 @@ public:
 	Circle_2D collider();
 
 	//These are virtual functions 
-	virtual void simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets,input* _input) = 0;
+	virtual void simulate_AI(Uint32 milliseconds_to_simulate, assets* _assets,input* _input,scene*_scene,game_manager*_game_manager) =0;
 	virtual void simulate_physics(Uint32 milliseconds_to_simulate, assets* _assets,scene* _scene) ;
 	virtual void render(Uint32 milliseconds_to_simulate, assets* assets,SDL_Renderer* renderer,configuration* config,scene* _scene) ;
 	void set_translation(Vector_2D _translation);

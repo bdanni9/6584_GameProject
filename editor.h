@@ -5,6 +5,7 @@
 
 #include "input.h"
 #include "scene.h"
+#include"configuration.h"
 #include "mario.h"
 
 class editor
